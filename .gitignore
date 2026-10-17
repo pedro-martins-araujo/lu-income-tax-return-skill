@@ -1,0 +1,23 @@
+# Never commit personal tax documents or generated workbooks
+*.pdf
+*.xlsx
+*.xls
+*.docx
+*.jpg
+*.jpeg
+*.png
+*.heic
+*.zip
+*.skill
+
+# Working folders people may create next to the skill
+*-workspace/
+data/
+private/
+
+# Python / OS
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+desktop.ini

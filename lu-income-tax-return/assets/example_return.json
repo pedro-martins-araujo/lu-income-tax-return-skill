@@ -1,0 +1,104 @@
+{
+  "_comment": "Fictional example. Every name and amount is invented. Rows hold numbers or formulas; {key} refers to the same column of another row, {key:p1|p2|hh|form} to a given column.",
+  "title": "Income tax return 2025 – Person A & Person B (example)",
+  "tax_year": 2025,
+  "persons": ["Person A", "Person B"],
+  "intro": "Joint return, MyGuichet draft 2026-XXXX-XXXX.",
+  "status": "Status: all pages filled and saved as a draft. NOT signed, NOT transmitted.",
+  "sections": [
+    {
+      "title": "1. Salaried income",
+      "rows": [
+        {"key": "sal", "label": "Salary", "p1": 52000.00, "p2": 61500.00, "source": "Salary certificates 2025, line 2"},
+        {"key": "prime", "label": "Prime participative", "p1": 0, "p2": 4000.00, "source": "Salary - Employer B - Person B - 2025.pdf, line 5"},
+        {"key": "gross", "label": "Gross remuneration", "p1": "=SUM({sal}:{prime})", "p2": "=SUM({sal}:{prime})", "form": 117500.00, "total": true},
+        {"key": "ex", "label": "Exemption – prime participative (50 %)", "p1": 0, "p2": 2000.00, "source": "Certificate line 23"},
+        {"key": "fo", "label": "Frais d'obtention (flat rate)", "p1": 540.00, "p2": 540.00, "source": "Legal flat rate"},
+        {"key": "fd", "label": "Frais de déplacement", "p1": 0, "p2": 990.00, "source": "Certificate line 12 (FD)"},
+        {"key": "netsal", "label": "Net salaried income", "p1": "={gross}-{ex}-{fo}-{fd}", "p2": "={gross}-{ex}-{fo}-{fd}", "form": 113430.00, "total": true},
+        {"key": "soc", "label": "Social contributions – deductible", "p1": 5720.00, "p2": 6650.00, "form": 12370.00, "source": "Certificate line 11"},
+        {"key": "wht", "label": "Tax withheld", "p1": 7400.00, "p2": 9100.00, "source": "Certificate line 29"}
+      ]
+    },
+    {
+      "title": "2. Income from capital",
+      "rows": [
+        {"key": "div", "label": "Dividend – gross (own company, decided 2025)", "p1": 4000.00, "p2": 6000.00, "source": "Shareholder resolution", "note": "Split by shares held."},
+        {"key": "div50", "label": "Retained after 50 % exemption", "p1": "={div}*0.5", "p2": "={div}*0.5"},
+        {"key": "cap_fo", "label": "Frais d'obtention (flat rate)", "household": 50.00},
+        {"key": "cap_ex", "label": "Tranche exemptée (couple)", "household": 3000.00},
+        {"key": "netcap", "label": "Net income from capital", "household": "={div50}-{cap_fo}-{cap_ex}", "form": 1950.00, "total": true},
+        {"key": "hsint", "label": "Not declared: home-savings interest (exempt, art. 115 no. 15)", "household": 21.40, "note": "Exempt; not entered."}
+      ]
+    },
+    {
+      "title": "3. Home – mortgage interest",
+      "rows": [
+        {"key": "loan1", "label": "Bank loan ...1000 (balance 240,000)", "p1": 2900.00, "p2": 2900.00, "source": "Mortgage interest - Bank 1000 - 2025.pdf"},
+        {"key": "decl", "label": "Interest declared", "p1": "={loan1}", "p2": "={loan1}", "total": true},
+        {"key": "cap", "label": "Ceiling (4 persons x 4,000, half per spouse)", "p1": 8000.00, "p2": 8000.00, "source": "Computed by MyGuichet"},
+        {"key": "ret", "label": "Interest retained", "p1": "=MIN({decl},{cap})", "p2": "=MIN({decl},{cap})", "form": 5800.00, "total": true},
+        {"key": "netrent", "label": "Net income from letting (deduction)", "p1": "=-{ret}", "p2": "=-{ret}", "form": -5800.00, "total": true}
+      ]
+    },
+    {
+      "title": "4. Special expenses",
+      "rows": [
+        {"key": "ins", "label": "Insurance premiums declared", "p1": 610.00, "p2": 380.00, "source": "Insurance certificates 2025"},
+        {"key": "ins_cap", "label": "Ceiling (4 x 672)", "household": 2688.00},
+        {"key": "ins_ret", "label": "Insurance retained", "household": "=MIN({ins},{ins_cap})"},
+        {"key": "hs", "label": "Home-savings contributions", "p1": 1200.00, "p2": 1200.00, "source": "Home savings statement 2025"},
+        {"key": "hs_ret", "label": "Home savings retained", "household": "=MIN({hs},{ins_cap})"},
+        {"key": "soc2", "label": "Compulsory social contributions", "p1": "={soc}", "p2": "={soc}"},
+        {"key": "spec", "label": "Total special expenses", "household": "={ins_ret}+{hs_ret}+{soc2}", "form": 15760.00, "total": true}
+      ]
+    },
+    {
+      "title": "5. Childcare (flat-rate allowance)",
+      "rows": [
+        {"key": "cc1", "label": "Child 1 – foyer scolaire", "p1": 0, "p2": 820.00, "source": "Childcare invoices 2025"},
+        {"key": "cc2", "label": "Child 2 – maison relais", "p1": 640.00, "p2": 0, "source": "Childcare invoices 2025"},
+        {"key": "cc", "label": "Childcare allowance requested", "p1": "=SUM({cc1}:{cc2})", "p2": "=SUM({cc1}:{cc2})", "form": 1460.00, "total": true}
+      ]
+    },
+    {
+      "title": "6. Recap as on the last page of the form",
+      "rows": [
+        {"key": "r_tot", "label": "Total net income", "p1": "={netsal}+{netcap:hh}/2+{netrent}", "p2": "={netsal}+{netcap:hh}/2+{netrent}", "form": 109580.00, "total": true},
+        {"key": "r_taxable", "label": "REVENU IMPOSABLE (taxable income)", "household": "={r_tot}-{spec}", "form": 93820.00, "total": true}
+      ]
+    }
+  ],
+  "summary": [
+    {"label": "Net salaried income", "key": "netsal"},
+    {"label": "Net income from capital", "key": "netcap", "per_person": false},
+    {"label": "Mortgage interest deducted", "key": "netrent"},
+    {"label": "Special expenses", "key": "spec", "per_person": false},
+    {"label": "Taxable income (revenu imposable)", "key": "r_taxable", "per_person": false, "bold": true},
+    {"label": "Tax withheld on salaries", "key": "wht"}
+  ],
+  "previous_year": {
+    "year": 2024,
+    "rows": [
+      {"key": "py_net", "label": "Net salaried income", "p1": 49800.00, "p2": 57300.00, "current": "netsal", "why": "Salary increases.", "source": "p. 14–15"},
+      {"key": "py_rent", "label": "Mortgage interest deducted", "p1": -3100.00, "p2": -3100.00, "current": "netrent", "why": "Interest falls as the loan is repaid.", "source": "p. 18"},
+      {"key": "py_tax", "label": "Taxable income", "household": 86210.00, "current": "r_taxable", "per_person": false, "total": true, "why": "Mainly the dividend and higher salaries.", "source": "p. 28"}
+    ]
+  },
+  "open_items": [
+    {"priority": "High", "topic": "Dividend withholding", "found": "15 % withholding claimed as a credit.", "action": "Keep the proof that the company paid it."},
+    {"priority": "Medium", "topic": "Insurance categories", "found": "Vehicle policy entered for its civil-liability part only.", "action": "Confirm the deductible amount on the insurer's certificate."}
+  ],
+  "attachments": [
+    {"section": "Salaries", "file": "01 - Salary - Employer A - Person A - 2025.pdf"},
+    {"section": "Salaries", "file": "02 - Salary - Employer B - Person B - 2025.pdf"},
+    {"section": "Dividend", "file": "03 - Dividend - Shareholder resolution 2025.pdf"},
+    {"section": "Mortgage interest", "file": "04 - Mortgage interest - Bank 1000 - 2025.pdf"}
+  ],
+  "todo": [
+    "1. Go through the open items.",
+    "2. Upload the files listed in 'Attachments' on the last step of MyGuichet.",
+    "3. Check bank account and identity numbers on the signature step.",
+    "4. Both of you sign and transmit."
+  ]
+}
